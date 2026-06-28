@@ -13,8 +13,6 @@ import Perfil from './pages/Perfil'
 import CrearPublicacion from './pages/CrearPublicacion'
 import NotFound from './pages/NotFound'
 
-// App = el "mapa" de la aplicación. Aquí se declaran TODAS las rutas (Requerimiento 2).
-// La Navbar y el Footer quedan fuera de <Routes> para que se vean en todas las vistas.
 function App() {
   return (
     <>
@@ -30,7 +28,6 @@ function App() {
           <Route path="/registro" element={<Registro />} />
 
           {/* ---------- Rutas privadas (requieren sesión) ---------- */}
-          {/* ProtectedRoute revisa el Context: si no hay usuario, redirige a /login */}
           <Route
             path="/perfil"
             element={

@@ -9,14 +9,14 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: var(--lato-crema);
-  color: var(--lato-cafe);
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--blanco);
+  color: var(--negro);
 }
 
 h1, h2, h3, .titulo-display {
-  font-family: 'Playfair Display', Georgia, serif;
-  color: var(--lato-cafe);
+  font-family: 'Open Sans', sans-serif;
+  color: var(--cafe-oscuro);
 }
 
 a { text-decoration: none; }

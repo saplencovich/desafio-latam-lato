@@ -60,6 +60,7 @@ export async function getPublicacion(id) {
           nombre_comercio: v.nombre_comercio,
           direccion: v.direccion,
           telefono: v.telefono,
+          email: v.email,
           horario: v.horario,
           despachos: v.despachos,
           reputacion: v.reputacion,
