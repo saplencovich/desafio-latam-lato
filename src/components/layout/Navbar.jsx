@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Navbar as BSNavbar, Container, Nav } from 'react-bootstrap'
 import { useAuth } from '../../hooks/useAuth'
+import logo from '../../assets/logo.jpg'
 
 // Navbar = base funcional. CONSUME el Context (Requerimiento 5):
 // muestra opciones distintas según haya sesión o no.
@@ -15,10 +16,10 @@ function Navbar() {
   }
 
   return (
-    <BSNavbar expand="lg" className="border-bottom" style={{ backgroundColor: '#EADBC8' }}>
+    <BSNavbar expand="lg" className="border-bottom" style={{ backgroundColor: '#EEE1CD' }}>
       <Container>
-        <BSNavbar.Brand as={Link} to="/" className="fw-bold" style={{ color: '#4B2E2B' }}>
-          <i className="fa-solid fa-mug-hot me-2"></i>LATO CAFÉS
+        <BSNavbar.Brand as={Link} to="/">
+          <img src={logo} alt="LATO Cafés" style={{ height: '40px' }} />
         </BSNavbar.Brand>
 
         <Nav className="ms-auto align-items-center gap-2">

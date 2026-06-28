@@ -1,10 +1,10 @@
-/* ---- Estilos globales LATO Cafés ---- */
-/* Paleta café tomada de los mockups del Hito 1 */
 :root {
-  --lato-crema: #F8F4EC;
-  --lato-beige: #EADBC8;
-  --lato-cafe: #4B2E2B;
-  --lato-cafe-claro: #8B5E3C;
+  --cafe-oscuro: #372314;   /* títulos y textos principales */
+  --cafe-medio: #624127;    /* botones y acentos */
+  --cafe-gris: #856E5A;     /* texto secundario */
+  --crema: #EEE1CD;         /* fondo Navbar y Footer */
+  --blanco: #FFFFFF;        /* fondo de páginas y tarjetas */
+  --negro: #000000;         /* texto neutro */
 }
 
 body {
