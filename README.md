@@ -1,3 +1,3 @@
 Integrantes:
         Samuel Plencovich
-        Michael Ugalde 
+        Michael Ugalde ©
