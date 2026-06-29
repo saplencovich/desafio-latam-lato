@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     // El backend respondería: { token, user: { id, nombre, email, rol } }
-    const fakeUser = { id: 1, nombre: 'Demo', email, rol: 'vendedor' }
+    const fakeUser = { id: 1, nombre: 'Demo', email, rol: 'vendedor', nombre_comercio: 'LATO Cafés',  direccion: 'Av. La Florida 12345', }
     const fakeToken = 'demo-token'
     setUser(fakeUser)
     setToken(fakeToken)

@@ -1,0 +1,135 @@
+.perfil-contenedor{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:50px 20px;
+
+}
+
+.perfil-titulo{
+    color:#4B2E2B;
+    font-size:40px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+.perfil-card{
+    width:100%;
+    border: 2px solid #4B2E2B;
+    border-radius:30px;
+    padding:30px;
+    display:flex;
+    gap: 20px;
+}
+
+.perfil-avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#D8B892;
+    border: 1px solid #bc8b53;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:38px;
+    color:#4B2E2B;
+}
+
+.perfil-card h2{
+    color:#4B2E2B;
+    font-size:40px;
+    font-weight:bold;
+    margin: auto;
+}
+
+.perfil-card p{
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    margin:auto;
+    color:#333;
+}
+
+.btn-editar{
+    padding:7px 15px;
+    margin: auto;
+    border: 1px solid #333;
+    border-radius:10px;
+    font-weight:bold;
+    color: #333;
+}
+.btn-editar-link{
+    color: #4B2E2B;
+}
+
+.btn-editar:hover{
+    background:#caa57c;
+    color:#4B2E2B;
+}
+
+.perfil-acciones{
+    display:flex;
+    width: 100%;
+    gap:20px;
+    padding:20px;
+    margin-top:30px;
+    display: flex;
+    border-bottom: 2px solid #bc8b53;
+}
+.btn-publicar{
+    margin-top:auto;
+    margin-left: auto;
+    margin-bottom: auto;
+    padding:7px 15px;
+    border: 1px solid #333;
+    color:#4B2E2B;
+    border-radius:10px;
+    font-weight:bold;
+    align-items: center;
+}
+
+.btn-publicar:hover{
+    background:#caa57c;
+    color:#4B2E2B;
+}
+
+.perfil-publicaciones{
+    display:flex;
+    gap:20px;
+    padding:20px;
+    justify-content: center;
+}
+.perfil-publicacion{
+    margin-top: 20px;
+    background:#fff;
+    border: 1px solid #333;
+    border-radius:10px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.perfil-publicacion p{
+    color:#4B2E2B;
+    font-size: small;
+}
+.perfil-imagen{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius:10px;
+}
+
+.btns-card{
+    text-align: end;
+}
+
+.btn-editar-publicacion{
+    border: none;
+    color: #4B2E2B;
+}
+.btn-eliminar-publicacion{
+    border: none;
+    color: #4B2E2B;
+}
+
