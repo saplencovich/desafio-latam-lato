@@ -1,16 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useFetch } from "../hooks/useFetch";
+import { getPublicacionesPorVendedor } from "../services/api";
 import Swal from "sweetalert2";
 import "./Perfil.css";
-import { publicaciones, categorias } from "../data/publicaciones";
 
 function Perfil() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const misPublicaciones = publicaciones.filter(
-    (pub) => pub.vendedor_id === user?.id
+  const { data: misPublicaciones, loading } = useFetch(
+    () => (user?.id ? getPublicacionesPorVendedor(user.id) : Promise.resolve([])),
+    [user?.id]
   );
+
   const editarPublicacion = (id) => {
     navigate(`/editar-publicacion/${id}`);
   };
@@ -64,44 +67,43 @@ function Perfil() {
         )}
       </div>
       <div className="perfil-publicaciones">
-        {misPublicaciones.length > 0 ? (
-          misPublicaciones.map((publicacion) => {
-            const categoria = categorias.find(
-              (cat) => cat.id === publicacion.categoria_id
-            );
-
-            return (
-              <div key={publicacion.id} className="perfil-publicacion">
-                <img className="perfil-imagen"
-                  src={publicacion.imagen_url}
-                  alt={publicacion.titulo}
-                />
-                <h4>{publicacion.titulo}</h4>
-                <p>
-                  <strong>Categoría:</strong> {categoria?.nombre}
-                </p>
-                <p>
-                  <strong>Precio:</strong> ${publicacion.precio}
-                </p>
-                <p>
-                  <strong>Stock:</strong> {publicacion.stock}
-                </p>
-                <p>{publicacion.descripcion}</p>
-                <div className="btns-card">
-                  <button
-                    className="btn-editar-publicacion"
-                    onClick={() => editarPublicacion(publicacion.id)}>
-                    Editar
-                  </button>
-                  <button
-                    className="btn-eliminar-publicacion"
-                    onClick={() => eliminarPublicacion(publicacion.id)}>
-                    Eliminar
-                  </button>
-                </div>
+        {loading ? (
+          <p>Cargando publicaciones...</p>
+        ) : misPublicaciones?.length > 0 ? (
+          misPublicaciones.map((publicacion) => (
+            <div key={publicacion.id} className="perfil-publicacion">
+              <img
+                className="perfil-imagen"
+                src={publicacion.imagen_url}
+                alt={publicacion.titulo}
+              />
+              <h4>{publicacion.titulo}</h4>
+              <p>
+                <strong>Categoría:</strong> {publicacion.categoria}
+              </p>
+              <p>
+                <strong>Precio:</strong> ${publicacion.precio}
+              </p>
+              <p>
+                <strong>Stock:</strong> {publicacion.stock}
+              </p>
+              <p>{publicacion.descripcion}</p>
+              <div className="btns-card">
+                <button
+                  className="btn-editar-publicacion"
+                  onClick={() => editarPublicacion(publicacion.id)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="btn-eliminar-publicacion"
+                  onClick={() => eliminarPublicacion(publicacion.id)}
+                >
+                  Eliminar
+                </button>
               </div>
-            );
-          })
+            </div>
+          ))
         ) : (
           <p>No tienes publicaciones registradas.</p>
         )}
