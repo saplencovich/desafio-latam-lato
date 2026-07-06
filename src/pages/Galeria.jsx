@@ -31,8 +31,10 @@ function Galeria() {
       if (min) params.precio_min = Number(min)
       if (max) params.precio_max = Number(max)
     }
-    return getPublicaciones(params)
+  return getPublicaciones(params)
   }, [filtros])
+
+  console.log("PUBLICACIONES", publicaciones)
 
   const handleFiltro = (e) => {
     const { name, value } = e.target

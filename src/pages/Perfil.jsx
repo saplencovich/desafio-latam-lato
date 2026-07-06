@@ -8,11 +8,14 @@ import "./Perfil.css";
 function Perfil() {
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  
   const { data: misPublicaciones, loading } = useFetch(
     () => (user?.id ? getPublicacionesPorVendedor(user.id) : Promise.resolve([])),
     [user?.id]
   );
+  
+  console.log("Usuario logueado:", user);
+  console.log("Mis publicaciones:", misPublicaciones);
 
   const editarPublicacion = (id) => {
     navigate(`/editar-publicacion/${id}`);
@@ -31,6 +34,10 @@ function Perfil() {
       console.log("Eliminar:", id);
     }
   };
+
+    console.log("Usuario:", user);
+    console.log("Mis publicaciones:", misPublicaciones);
+
 
   return (
     <div className="perfil-contenedor">

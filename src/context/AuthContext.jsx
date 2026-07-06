@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
-
+import { api } from '../services/api';
 // ============================================================
 //  CONTEXT API — Estado global de sesión (Requerimiento 5)
 // ============================================================
@@ -30,27 +30,31 @@ export function AuthProvider({ children }) {
   //  Por ahora simulamos la respuesta del backend { token, user }.
   // -----------------------------------------------------------------
 
-  const login = async (email, password) => {
-    // El backend respondería: { token, user: { id, nombre, email, rol } }
-    const fakeUser = { id: 1, nombre: 'Demo', email, rol: 'vendedor', nombre_comercio: 'LATO Cafés',  direccion: 'Av. La Florida 12345', }
-    const fakeToken = 'demo-token'
-    setUser(fakeUser)
-    setToken(fakeToken)
-    localStorage.setItem('user', JSON.stringify(fakeUser))
-    localStorage.setItem('token', fakeToken)
-    return fakeUser
-  }
+ const login = async (email, password) => {
+  const { data } = await api.post("/auth/login", {
+    email,
+    password,
+  });
 
-  const register = async (datos) => {
-    // datos = { nombre, email, password, rol, (nombre_comercio, direccion, telefono) }
-    const fakeUser = { id: 1, nombre: datos.nombre, email: datos.email, rol: datos.rol }
-    const fakeToken = 'demo-token'
-    setUser(fakeUser)
-    setToken(fakeToken)
-    localStorage.setItem('user', JSON.stringify(fakeUser))
-    localStorage.setItem('token', fakeToken)
-    return fakeUser
-  }
+  setUser(data.user);
+  setToken(data.token);
+  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("token", data.token);
+
+  return data.user;
+};
+
+const register = async (datos) => {
+  const { data } = await api.post("/auth/registro", datos);
+
+  setUser(data.user);
+  setToken(data.token);
+
+  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("token", data.token);
+
+  return data.user;
+};
 
   const logout = () => {
     setUser(null)

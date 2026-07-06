@@ -6,7 +6,7 @@ const getPublicaciones = async (req, res) => {
     res.json(publicaciones);
   } catch (error) {
     res.status(500).json({
-      mensaje: 'Error al obtener las publicaciones'
+      mensaje: error.mensaje
     });
   }
 };
@@ -30,13 +30,16 @@ const getPublicacion = async (req, res) => {
 };
 
 const createPublicacion = async (req, res) => {
+  console.log(req.body);
+
   try {
     const nuevaPublicacion = await publicacionModel.createPublicacion(req.body);
 
     res.status(201).json(nuevaPublicacion);
   } catch (error) {
+    console.error(error);
     res.status(500).json({
-      mensaje: 'Error al crear la publicación'
+      mensaje: error.message
     });
   }
 };
