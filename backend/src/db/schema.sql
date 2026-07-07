@@ -46,3 +46,10 @@ CREATE TABLE opiniones (
   comentario TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+INSERT INTO categorias (nombre) VALUES
+('Cafés'),
+('Cafeteras'),
+('Molinos'),
+('Accesorios'),
+('Métodos');
