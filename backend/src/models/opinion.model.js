@@ -15,6 +15,34 @@ const getOpinionById = async (id) => {
   return rows[0];
 };
 
+const getOpinionesPorVendedor = async (vendedorId, puntaje) => {
+  const condiciones = ['o.vendedor_id = $1'];
+  const valores = [vendedorId];
+
+  if (puntaje) {
+    valores.push(puntaje);
+    condiciones.push(`o.puntaje = $${valores.length}`);
+  }
+
+  const { rows } = await pool.query(
+    `SELECT
+      o.id,
+      o.autor_id,
+      o.vendedor_id,
+      o.puntaje,
+      o.comentario,
+      o.created_at,
+      u.nombre AS autor_nombre
+    FROM opiniones o
+    JOIN usuarios u ON u.id = o.autor_id
+    WHERE ${condiciones.join(' AND ')}
+    ORDER BY o.created_at DESC`,
+    valores
+  );
+
+  return rows;
+};
+
 const createOpinion = async (opinion) => {
   const {
     autor_id,
@@ -73,6 +101,7 @@ const deleteOpinion = async (id) => {
 module.exports = {
   getAllOpiniones,
   getOpinionById,
+  getOpinionesPorVendedor,
   createOpinion,
   updateOpinion,
   deleteOpinion

@@ -93,6 +93,21 @@ export async function createPublicacion(publicacion) {
 }
 
 // ==========================
+// OPINIONES
+// ==========================
+
+export async function createOpinion(opinion) {
+  const { data } = await api.post("/opiniones", opinion);
+  return data;
+}
+
+export async function getOpinionesPorVendedor(vendedorId, puntaje) {
+  const params = puntaje ? { puntaje } : {};
+  const { data } = await api.get(`/opiniones/vendedor/${vendedorId}`, { params });
+  return data;
+}
+
+// ==========================
 // OPCIONES FILTRO
 // ==========================
 

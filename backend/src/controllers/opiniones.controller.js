@@ -25,6 +25,22 @@ const getOpinion = async (req, res, next) => {
   }
 };
 
+const getOpinionesPorVendedor = async (req, res, next) => {
+  try {
+    const { vendedorId } = req.params;
+    const { puntaje } = req.query;
+
+    const opiniones = await opinionModel.getOpinionesPorVendedor(
+      vendedorId,
+      puntaje ? Number(puntaje) : null
+    );
+
+    res.json(opiniones);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createOpinion = async (req, res, next) => {
   try {
     const nuevaOpinion = await opinionModel.createOpinion(req.body);
@@ -76,6 +92,7 @@ const deleteOpinion = async (req, res, next) => {
 module.exports = {
   getOpiniones,
   getOpinion,
+  getOpinionesPorVendedor,
   createOpinion,
   updateOpinion,
   deleteOpinion

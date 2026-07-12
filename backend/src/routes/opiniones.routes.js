@@ -7,6 +7,8 @@ const { validarOpinion } = require('../middlewares/validate.middleware');
 
 router.get('/', opinionesController.getOpiniones);
 
+router.get('/vendedor/:vendedorId', opinionesController.getOpinionesPorVendedor);
+
 router.get('/:id', opinionesController.getOpinion);
 
 router.post('/', verificarToken, validarOpinion, opinionesController.createOpinion);
