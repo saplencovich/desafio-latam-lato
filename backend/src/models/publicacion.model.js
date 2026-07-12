@@ -22,13 +22,14 @@ const getAllPublicaciones = async () => {
         'despachos', v.despachos,
         'telefono', v.telefono,
         'email', v.email,
-        'reputacion', COALESCE(op.promedio, 0)
+        'reputacion', COALESCE(op.promedio, 0),
+        'total_opiniones', COALESCE(op.total, 0)
       ) AS vendedor
     FROM publicaciones p
     JOIN categorias c ON c.id = p.categoria_id
     LEFT JOIN vendedores v ON v.usuario_id = p.usuario_id
     LEFT JOIN (
-      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio
+      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio, COUNT(*) AS total
       FROM opiniones
       GROUP BY vendedor_id
     ) op ON op.vendedor_id = p.usuario_id
@@ -59,13 +60,14 @@ const getPublicacionById = async (id) => {
         'despachos', v.despachos,
         'telefono', v.telefono,
         'email', v.email,
-        'reputacion', COALESCE(op.promedio, 0)
+        'reputacion', COALESCE(op.promedio, 0),
+        'total_opiniones', COALESCE(op.total, 0)
       ) AS vendedor
     FROM publicaciones p
     JOIN categorias c ON c.id = p.categoria_id
     LEFT JOIN vendedores v ON v.usuario_id = p.usuario_id
     LEFT JOIN (
-      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio
+      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio, COUNT(*) AS total
       FROM opiniones
       GROUP BY vendedor_id
     ) op ON op.vendedor_id = p.usuario_id
