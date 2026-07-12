@@ -1,15 +1,15 @@
 const categoriaModel = require('../models/categoria.model');
 
-const getCategorias = async (req, res) => {
+const getCategorias = async (req, res, next) => {
   try {
     const categorias = await categoriaModel.getAllCategorias();
     res.json(categorias);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener las categorías' });
+    next(error);
   }
 };
 
-const getCategoria = async (req, res) => {
+const getCategoria = async (req, res, next) => {
   try {
     const categoria = await categoriaModel.getCategoriaById(req.params.id);
 
@@ -19,11 +19,11 @@ const getCategoria = async (req, res) => {
 
     res.json(categoria);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener la categoría' });
+    next(error);
   }
 };
 
-const createCategoria = async (req, res) => {
+const createCategoria = async (req, res, next) => {
   try {
     const { nombre } = req.body;
 
@@ -31,11 +31,11 @@ const createCategoria = async (req, res) => {
 
     res.status(201).json(nuevaCategoria);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al crear la categoría' });
+    next(error);
   }
 };
 
-const updateCategoria = async (req, res) => {
+const updateCategoria = async (req, res, next) => {
   try {
     const { nombre } = req.body;
 
@@ -50,11 +50,11 @@ const updateCategoria = async (req, res) => {
 
     res.json(categoria);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al actualizar la categoría' });
+    next(error);
   }
 };
 
-const deleteCategoria = async (req, res) => {
+const deleteCategoria = async (req, res, next) => {
   try {
     const categoria = await categoriaModel.deleteCategoria(req.params.id);
 
@@ -67,7 +67,7 @@ const deleteCategoria = async (req, res) => {
       categoria,
     });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al eliminar la categoría' });
+    next(error);
   }
 };
 

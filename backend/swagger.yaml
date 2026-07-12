@@ -1,0 +1,439 @@
+openapi: 3.0.0
+info:
+  title: LATO Cafés API
+  description: API REST para marketplace de café de especialidad con modelo de contacto directo al vendedor.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Auth
+    description: Registro e inicio de sesión
+  - name: Usuarios
+    description: Gestión del perfil del usuario autenticado
+  - name: Vendedores
+    description: Datos públicos y de comercio de vendedores
+  - name: Categorías
+    description: Categorías de productos
+  - name: Publicaciones
+    description: Publicaciones de productos
+  - name: Opiniones
+    description: Opiniones sobre vendedores
+
+paths:
+  /auth/registro:
+    post:
+      tags: [Auth]
+      summary: Registra un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre, email, password, rol]
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                rol:
+                  type: string
+                  enum: [cliente, vendedor]
+                nombre_comercio:
+                  type: string
+                  description: Obligatorio si rol es vendedor
+                direccion:
+                  type: string
+                  description: Obligatorio si rol es vendedor
+      responses:
+        '201':
+          description: Usuario creado correctamente
+        '400':
+          description: Faltan campos obligatorios
+        '409':
+          description: El correo ya está registrado
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Inicia sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login exitoso, devuelve token y datos del usuario
+        '401':
+          description: Credenciales inválidas
+
+  /usuarios/perfil:
+    get:
+      tags: [Usuarios]
+      summary: Obtiene el perfil del usuario autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Perfil del usuario
+        '401':
+          description: Token no proporcionado
+        '403':
+          description: Token inválido o expirado
+    put:
+      tags: [Usuarios]
+      summary: Actualiza el perfil del usuario autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                foto_url:
+                  type: string
+      responses:
+        '200':
+          description: Perfil actualizado
+    delete:
+      tags: [Usuarios]
+      summary: Elimina la cuenta del usuario autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Cuenta eliminada correctamente
+
+  /vendedores/{id}:
+    get:
+      tags: [Vendedores]
+      summary: Obtiene los datos públicos de un vendedor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos del vendedor
+        '404':
+          description: Vendedor no encontrado
+
+  /vendedores/comercio:
+    put:
+      tags: [Vendedores]
+      summary: Actualiza los datos de comercio del vendedor autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre_comercio:
+                  type: string
+                direccion:
+                  type: string
+                horario:
+                  type: string
+                despachos:
+                  type: string
+                telefono:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Comercio actualizado
+        '403':
+          description: Solo los vendedores pueden editar datos de comercio
+
+  /categorias:
+    get:
+      tags: [Categorías]
+      summary: Lista todas las categorías
+      responses:
+        '200':
+          description: Lista de categorías
+    post:
+      tags: [Categorías]
+      summary: Crea una nueva categoría
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nombre]
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '201':
+          description: Categoría creada
+        '400':
+          description: Nombre inválido o faltante
+
+  /categorias/{id}:
+    get:
+      tags: [Categorías]
+      summary: Obtiene una categoría por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Categoría encontrada
+        '404':
+          description: Categoría no encontrada
+    put:
+      tags: [Categorías]
+      summary: Actualiza una categoría
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+      responses:
+        '200':
+          description: Categoría actualizada
+        '404':
+          description: Categoría no encontrada
+    delete:
+      tags: [Categorías]
+      summary: Elimina una categoría
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Categoría eliminada
+        '404':
+          description: Categoría no encontrada
+
+  /publicaciones:
+    get:
+      tags: [Publicaciones]
+      summary: Lista todas las publicaciones (con categoría y vendedor resueltos)
+      responses:
+        '200':
+          description: Lista de publicaciones
+    post:
+      tags: [Publicaciones]
+      summary: Crea una nueva publicación
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [usuario_id, categoria_id, titulo, precio, stock]
+              properties:
+                usuario_id:
+                  type: integer
+                categoria_id:
+                  type: integer
+                titulo:
+                  type: string
+                descripcion:
+                  type: string
+                precio:
+                  type: number
+                stock:
+                  type: integer
+                imagen_url:
+                  type: string
+                origen:
+                  type: string
+                tueste:
+                  type: string
+      responses:
+        '201':
+          description: Publicación creada
+        '400':
+          description: Datos inválidos
+        '401':
+          description: Token no proporcionado
+
+  /publicaciones/{id}:
+    get:
+      tags: [Publicaciones]
+      summary: Obtiene una publicación por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación encontrada
+        '404':
+          description: Publicación no encontrada
+    put:
+      tags: [Publicaciones]
+      summary: Actualiza una publicación
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación actualizada
+        '401':
+          description: Token no proporcionado
+        '404':
+          description: Publicación no encontrada
+    delete:
+      tags: [Publicaciones]
+      summary: Elimina una publicación
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicación eliminada
+        '401':
+          description: Token no proporcionado
+        '404':
+          description: Publicación no encontrada
+
+  /opiniones:
+    get:
+      tags: [Opiniones]
+      summary: Lista todas las opiniones
+      responses:
+        '200':
+          description: Lista de opiniones
+    post:
+      tags: [Opiniones]
+      summary: Crea una nueva opinión
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [autor_id, vendedor_id, puntaje]
+              properties:
+                autor_id:
+                  type: integer
+                vendedor_id:
+                  type: integer
+                puntaje:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                comentario:
+                  type: string
+      responses:
+        '201':
+          description: Opinión creada
+        '400':
+          description: Datos inválidos
+        '401':
+          description: Token no proporcionado
+
+  /opiniones/{id}:
+    get:
+      tags: [Opiniones]
+      summary: Obtiene una opinión por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Opinión encontrada
+        '404':
+          description: Opinión no encontrada
+    put:
+      tags: [Opiniones]
+      summary: Actualiza una opinión
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Opinión actualizada
+        '401':
+          description: Token no proporcionado
+        '404':
+          description: Opinión no encontrada
+    delete:
+      tags: [Opiniones]
+      summary: Elimina una opinión
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Opinión eliminada
+        '401':
+          description: Token no proporcionado
+        '404':
+          description: Opinión no encontrada
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

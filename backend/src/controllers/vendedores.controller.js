@@ -1,6 +1,6 @@
 const vendedorModel = require('../models/vendedor.model');
 
-async function obtenerVendedor(req, res) {
+async function obtenerVendedor(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -11,12 +11,11 @@ async function obtenerVendedor(req, res) {
 
     return res.status(200).json(vendedor);
   } catch (error) {
-    console.error('Error al obtener vendedor:', error);
-    return res.status(500).json({ mensaje: 'Error interno al obtener el vendedor' });
+    next(error);
   }
 }
 
-async function actualizarDatosComercio(req, res) {
+async function actualizarDatosComercio(req, res, next) {
   try {
     const { id, rol } = req.usuario;
 
@@ -41,8 +40,7 @@ async function actualizarDatosComercio(req, res) {
 
     return res.status(200).json(vendedorActualizado);
   } catch (error) {
-    console.error('Error al actualizar datos de comercio:', error);
-    return res.status(500).json({ mensaje: 'Error interno al actualizar el comercio' });
+    next(error);
   }
 }
 

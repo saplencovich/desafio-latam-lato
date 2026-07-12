@@ -1,17 +1,15 @@
 const opinionModel = require('../models/opinion.model');
 
-const getOpiniones = async (req, res) => {
+const getOpiniones = async (req, res, next) => {
   try {
     const opiniones = await opinionModel.getAllOpiniones();
     res.json(opiniones);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al obtener las opiniones'
-    });
+    next(error);
   }
 };
 
-const getOpinion = async (req, res) => {
+const getOpinion = async (req, res, next) => {
   try {
     const opinion = await opinionModel.getOpinionById(req.params.id);
 
@@ -23,25 +21,21 @@ const getOpinion = async (req, res) => {
 
     res.json(opinion);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al obtener la opinión'
-    });
+    next(error);
   }
 };
 
-const createOpinion = async (req, res) => {
+const createOpinion = async (req, res, next) => {
   try {
     const nuevaOpinion = await opinionModel.createOpinion(req.body);
 
     res.status(201).json(nuevaOpinion);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al crear la opinión'
-    });
+    next(error);
   }
 };
 
-const updateOpinion = async (req, res) => {
+const updateOpinion = async (req, res, next) => {
   try {
     const opinion = await opinionModel.updateOpinion(
       req.params.id,
@@ -56,13 +50,11 @@ const updateOpinion = async (req, res) => {
 
     res.json(opinion);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al actualizar la opinión'
-    });
+    next(error);
   }
 };
 
-const deleteOpinion = async (req, res) => {
+const deleteOpinion = async (req, res, next) => {
   try {
     const opinion = await opinionModel.deleteOpinion(req.params.id);
 
@@ -77,9 +69,7 @@ const deleteOpinion = async (req, res) => {
       opinion
     });
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al eliminar la opinión'
-    });
+    next(error);
   }
 };
 

@@ -1,7 +1,7 @@
 const usuarioModel = require('../models/usuario.model');
 const vendedorModel = require('../models/vendedor.model');
 
-async function obtenerPerfil(req, res) {
+async function obtenerPerfil(req, res, next) {
   try {
     const { id, rol } = req.usuario;
 
@@ -28,12 +28,11 @@ async function obtenerPerfil(req, res) {
 
     return res.status(200).json(user);
   } catch (error) {
-    console.error('Error al obtener perfil:', error);
-    return res.status(500).json({ mensaje: 'Error interno al obtener el perfil' });
+    next(error);
   }
 }
 
-async function actualizarPerfil(req, res) {
+async function actualizarPerfil(req, res, next) {
   try {
     const { id } = req.usuario;
     const { nombre, foto_url } = req.body;
@@ -45,12 +44,11 @@ async function actualizarPerfil(req, res) {
 
     return res.status(200).json(usuarioActualizado);
   } catch (error) {
-    console.error('Error al actualizar perfil:', error);
-    return res.status(500).json({ mensaje: 'Error interno al actualizar el perfil' });
+    next(error);
   }
 }
 
-async function eliminarCuenta(req, res) {
+async function eliminarCuenta(req, res, next) {
   try {
     const { id } = req.usuario;
 
@@ -61,8 +59,7 @@ async function eliminarCuenta(req, res) {
 
     return res.status(200).json({ mensaje: 'Cuenta eliminada correctamente' });
   } catch (error) {
-    console.error('Error al eliminar cuenta:', error);
-    return res.status(500).json({ mensaje: 'Error interno al eliminar la cuenta' });
+    next(error);
   }
 }
 

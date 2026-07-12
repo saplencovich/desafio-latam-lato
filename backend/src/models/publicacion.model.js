@@ -1,17 +1,76 @@
 const pool = require('../config/db');
 
 const getAllPublicaciones = async () => {
-  const { rows } = await pool.query(
-    `SELECT * FROM publicaciones ORDER BY id`
-  );
+  const { rows } = await pool.query(`
+    SELECT
+      p.id,
+      p.usuario_id,
+      p.categoria_id,
+      c.nombre AS categoria,
+      p.titulo,
+      p.descripcion,
+      p.precio,
+      p.stock,
+      p.imagen_url,
+      p.origen,
+      p.tueste,
+      p.created_at,
+      json_build_object(
+        'nombre_comercio', v.nombre_comercio,
+        'direccion', v.direccion,
+        'horario', v.horario,
+        'despachos', v.despachos,
+        'telefono', v.telefono,
+        'email', v.email,
+        'reputacion', COALESCE(op.promedio, 0)
+      ) AS vendedor
+    FROM publicaciones p
+    JOIN categorias c ON c.id = p.categoria_id
+    LEFT JOIN vendedores v ON v.usuario_id = p.usuario_id
+    LEFT JOIN (
+      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio
+      FROM opiniones
+      GROUP BY vendedor_id
+    ) op ON op.vendedor_id = p.usuario_id
+    ORDER BY p.id
+  `);
   return rows;
 };
 
 const getPublicacionById = async (id) => {
-  const { rows } = await pool.query(
-    `SELECT * FROM publicaciones WHERE id = $1`,
-    [id]
-  );
+  const { rows } = await pool.query(`
+    SELECT
+      p.id,
+      p.usuario_id,
+      p.categoria_id,
+      c.nombre AS categoria,
+      p.titulo,
+      p.descripcion,
+      p.precio,
+      p.stock,
+      p.imagen_url,
+      p.origen,
+      p.tueste,
+      p.created_at,
+      json_build_object(
+        'nombre_comercio', v.nombre_comercio,
+        'direccion', v.direccion,
+        'horario', v.horario,
+        'despachos', v.despachos,
+        'telefono', v.telefono,
+        'email', v.email,
+        'reputacion', COALESCE(op.promedio, 0)
+      ) AS vendedor
+    FROM publicaciones p
+    JOIN categorias c ON c.id = p.categoria_id
+    LEFT JOIN vendedores v ON v.usuario_id = p.usuario_id
+    LEFT JOIN (
+      SELECT vendedor_id, ROUND(AVG(puntaje), 1) AS promedio
+      FROM opiniones
+      GROUP BY vendedor_id
+    ) op ON op.vendedor_id = p.usuario_id
+    WHERE p.id = $1
+  `, [id]);
   return rows[0];
 };
 

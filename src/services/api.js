@@ -7,6 +7,16 @@ export const api = axios.create({
   },
 });
 
+// Interceptor: agrega el token automáticamente a todas las peticiones,
+// si existe una sesión guardada en localStorage.
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // ==========================
 // CATEGORÍAS
 // ==========================
@@ -75,6 +85,11 @@ export async function getPublicacionesPorVendedor(vendedorId) {
   return data.filter(
     (p) => Number(p.usuario_id) === Number(vendedorId)
   );
+}
+
+export async function createPublicacion(publicacion) {
+  const { data } = await api.post("/publicaciones", publicacion);
+  return data;
 }
 
 // ==========================

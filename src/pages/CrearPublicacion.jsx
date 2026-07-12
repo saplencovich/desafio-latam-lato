@@ -2,6 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import "./CrearPublicacion.css";
 import { useAuth } from "../hooks/useAuth";
+import { createPublicacion } from "../services/api";
 
 function CrearPublicacion() {
   const { user } = useAuth();
@@ -40,34 +41,17 @@ function CrearPublicacion() {
     }
 
     try {
-      console.log("Enviando al backend...");
-
-      const response = await fetch("http://localhost:3000/api/publicaciones", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          usuario_id: user.id,
-          categoria_id: Number(publicacion.categoria),
-          titulo: publicacion.titulo,
-          descripcion: publicacion.descripcion,
-          precio: Number(publicacion.precio),
-          stock: Number(publicacion.stock),
-          imagen_url: publicacion.imagen,
-          origen: publicacion.origen,
-          tueste: publicacion.tueste,
-        }),
+      await createPublicacion({
+        usuario_id: user.id,
+        categoria_id: Number(publicacion.categoria),
+        titulo: publicacion.titulo,
+        descripcion: publicacion.descripcion,
+        precio: Number(publicacion.precio),
+        stock: Number(publicacion.stock),
+        imagen_url: publicacion.imagen,
+        origen: publicacion.origen,
+        tueste: publicacion.tueste,
       });
-
-      const data = await response.json();
-
-      console.log("Status:", response.status);
-      console.log("Respuesta:", data);
-
-      if (!response.ok) {
-        throw new Error(data.mensaje || "Error al crear la publicación");
-      }
 
       Swal.fire({
         icon: "success",
@@ -91,7 +75,7 @@ function CrearPublicacion() {
       Swal.fire({
         icon: "error",
         title: "Error al crear la publicación",
-        text: error.message,
+        text: error.response?.data?.mensaje || error.message,
       });
     }
   };

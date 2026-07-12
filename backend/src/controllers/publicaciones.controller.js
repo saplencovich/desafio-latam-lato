@@ -1,17 +1,15 @@
 const publicacionModel = require('../models/publicacion.model');
 
-const getPublicaciones = async (req, res) => {
+const getPublicaciones = async (req, res, next) => {
   try {
     const publicaciones = await publicacionModel.getAllPublicaciones();
     res.json(publicaciones);
   } catch (error) {
-    res.status(500).json({
-      mensaje: error.mensaje
-    });
+    next(error);
   }
 };
 
-const getPublicacion = async (req, res) => {
+const getPublicacion = async (req, res, next) => {
   try {
     const publicacion = await publicacionModel.getPublicacionById(req.params.id);
 
@@ -23,28 +21,21 @@ const getPublicacion = async (req, res) => {
 
     res.json(publicacion);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al obtener la publicación'
-    });
+    next(error);
   }
 };
 
-const createPublicacion = async (req, res) => {
-  console.log(req.body);
-
+const createPublicacion = async (req, res, next) => {
   try {
     const nuevaPublicacion = await publicacionModel.createPublicacion(req.body);
 
     res.status(201).json(nuevaPublicacion);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      mensaje: error.message
-    });
+    next(error);
   }
 };
 
-const updatePublicacion = async (req, res) => {
+const updatePublicacion = async (req, res, next) => {
   try {
     const publicacion = await publicacionModel.updatePublicacion(
       req.params.id,
@@ -59,13 +50,11 @@ const updatePublicacion = async (req, res) => {
 
     res.json(publicacion);
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al actualizar la publicación'
-    });
+    next(error);
   }
 };
 
-const deletePublicacion = async (req, res) => {
+const deletePublicacion = async (req, res, next) => {
   try {
     const publicacion = await publicacionModel.deletePublicacion(req.params.id);
 
@@ -80,9 +69,7 @@ const deletePublicacion = async (req, res) => {
       publicacion
     });
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al eliminar la publicación'
-    });
+    next(error);
   }
 };
 

@@ -13,7 +13,7 @@ function generarToken(usuario) {
   );
 }
 
-async function registro(req, res) {
+async function registro(req, res, next) {
   try {
     const { nombre, email, password, rol, nombre_comercio, direccion } = req.body;
 
@@ -63,12 +63,11 @@ async function registro(req, res) {
 
     return res.status(201).json({ token, user });
   } catch (error) {
-    console.error('Error en registro:', error);
-    return res.status(500).json({ mensaje: 'Error interno al registrar el usuario' });
+    next(error);
   }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
@@ -106,8 +105,7 @@ async function login(req, res) {
 
     return res.status(200).json({ token, user });
   } catch (error) {
-    console.error('Error en login:', error);
-    return res.status(500).json({ mensaje: 'Error interno al iniciar sesión' });
+    next(error);
   }
 }
 
