@@ -7,8 +7,6 @@ export const api = axios.create({
   },
 });
 
-// Interceptor: agrega el token automáticamente a todas las peticiones,
-// si existe una sesión guardada en localStorage.
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -92,6 +90,16 @@ export async function createPublicacion(publicacion) {
   return data;
 }
 
+export async function updatePublicacion(id, publicacion) {
+  const { data } = await api.put(`/publicaciones/${id}`, publicacion);
+  return data;
+}
+
+export async function deletePublicacion(id) {
+  const { data } = await api.delete(`/publicaciones/${id}`);
+  return data;
+}
+
 // ==========================
 // OPINIONES
 // ==========================
@@ -104,6 +112,34 @@ export async function createOpinion(opinion) {
 export async function getOpinionesPorVendedor(vendedorId, puntaje) {
   const params = puntaje ? { puntaje } : {};
   const { data } = await api.get(`/opiniones/vendedor/${vendedorId}`, { params });
+  return data;
+}
+
+// ==========================
+// USUARIOS
+// ==========================
+
+export async function updateNombre(nombre) {
+  const { data } = await api.put("/usuarios/perfil", { nombre });
+  return data;
+}
+
+export async function updateEmail(email) {
+  const { data } = await api.put("/usuarios/perfil/email", { email });
+  return data;
+}
+
+export async function updatePassword(passwordActual, passwordNueva) {
+  const { data } = await api.put("/usuarios/perfil/password", { passwordActual, passwordNueva });
+  return data;
+}
+
+// ==========================
+// VENDEDORES
+// ==========================
+
+export async function updateComercio(datos) {
+  const { data } = await api.put("/vendedores/comercio", datos);
   return data;
 }
 

@@ -18,6 +18,9 @@ function Registro() {
     direccion:"",
   });
 
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
+
   const handleChange = (e) => {
     setFormulario({
       ...formulario,
@@ -98,19 +101,49 @@ function Registro() {
           onChange={handleChange}
         />
         <label>Contraseña</label>
-        <input
-          type="password"
-          name="password"
-          value={formulario.password}
-          onChange={handleChange}
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            type={mostrarPassword ? "text" : "password"}
+            name="password"
+            value={formulario.password}
+            onChange={handleChange}
+            style={{ width: "100%", paddingRight: "35px" }}
+          />
+          <i
+            className={mostrarPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}
+            onClick={() => setMostrarPassword(!mostrarPassword)}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#555",
+            }}
+          ></i>
+        </div>
         <label>Confirmar contraseña</label>
-        <input
-          type="password"
-          name="confirmarPassword"
-          value={formulario.confirmarPassword}
-          onChange={handleChange}
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            type={mostrarConfirmarPassword ? "text" : "password"}
+            name="confirmarPassword"
+            value={formulario.confirmarPassword}
+            onChange={handleChange}
+            style={{ width: "100%", paddingRight: "35px" }}
+          />
+          <i
+            className={mostrarConfirmarPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}
+            onClick={() => setMostrarConfirmarPassword(!mostrarConfirmarPassword)}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#555",
+            }}
+          ></i>
+        </div>
         <label>Tipo de usuario</label>
         <select
           name="rol"

@@ -133,3 +133,36 @@
     color: #4B2E2B;
 }
 
+.perfil-editar-seccion{
+    width:100%;
+    background:#fff;
+    border: 1px solid #bc8b53;
+    border-radius:20px;
+    padding:25px;
+    margin-top:20px;
+}
+
+.perfil-editar-seccion h5{
+    color:#4B2E2B;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.btn-guardar-perfil{
+    background:#D8B892;
+    color:#4B2E2B;
+    border:none;
+    font-weight:bold;
+    padding:8px 20px;
+    border-radius:10px;
+}
+
+.btn-guardar-perfil:hover{
+    background:#caa57c;
+    color:#4B2E2B;
+}
+
+.perfil-historial-item{
+    text-decoration:none;
+    cursor:pointer;
+}

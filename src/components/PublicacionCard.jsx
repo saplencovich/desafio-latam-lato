@@ -14,12 +14,14 @@ function PublicacionCard({ publicacion, esDueno = false, onEditar, onEliminar })
 
   return (
     <Card className="h-100 shadow-sm">
-      <Card.Img
-        variant="top"
-        src={imagen_url}
-        alt={titulo}
-        style={{ height: '200px', objectFit: 'cover' }}
-      />
+      <Link to={`/publicacion/${id}`}>
+        <Card.Img
+          variant="top"
+          src={imagen_url}
+          alt={titulo}
+          style={{ height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+        />
+      </Link>
       <Card.Body className="d-flex flex-column">
         <Card.Title className="h6">{titulo}</Card.Title>
         <Card.Text className="fw-bold mb-3">{precioCLP}</Card.Text>

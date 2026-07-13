@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, Row, Col, Button, Spinner, Form } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -6,7 +6,6 @@ import { useFetch } from '../hooks/useFetch'
 import { useAuth } from '../hooks/useAuth'
 import { getPublicacion, createOpinion, getOpinionesPorVendedor } from '../services/api'
 
-// DETALLE DE PUBLICACIÓN (pública)
 function Detalle() {
   const { id } = useParams()
   const { user } = useAuth()
@@ -26,7 +25,18 @@ function Detalle() {
     [vendedorId, filtroEstrellas, refreshKey]
   )
 
-  // estado de carga
+  // Registra la publicación vista en el historial local (localStorage)
+  useEffect(() => {
+    if (!pub) return
+    const historialActual = JSON.parse(localStorage.getItem('historialVistos') || '[]')
+    const sinDuplicado = historialActual.filter((item) => item.id !== pub.id)
+    const nuevoHistorial = [
+      { id: pub.id, titulo: pub.titulo, imagen_url: pub.imagen_url, precio: pub.precio },
+      ...sinDuplicado,
+    ].slice(0, 20)
+    localStorage.setItem('historialVistos', JSON.stringify(nuevoHistorial))
+  }, [pub])
+
   if (loading) {
     return (
       <Container className="text-center py-5">
@@ -52,7 +62,7 @@ function Detalle() {
     currency: 'CLP',
   })
   const v = pub.vendedor
-  const telLimpio = v?.telefono?.replace(/\D/g, '') // para wa.me y tel:
+  const telLimpio = v?.telefono?.replace(/\D/g, '')
   const mapsUrl = v
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.direccion)}`
     : '#'
@@ -111,7 +121,6 @@ function Detalle() {
       </Button>
 
       <Row className="g-4">
-        {/* IMAGEN */}
         <Col md={6}>
           <img
             src={pub.imagen_url}
@@ -121,7 +130,6 @@ function Detalle() {
           />
         </Col>
 
-        {/* INFORMACIÓN */}
         <Col md={6}>
           <h2 style={{ color: 'var(--cafe-oscuro)' }}>{pub.titulo}</h2>
           <h3 className="fw-bold mb-3" style={{ color: 'var(--cafe-medio)' }}>
@@ -132,13 +140,11 @@ function Detalle() {
 
           <ul className="list-unstyled">
             <li><strong>Categoría:</strong> {pub.categoria}</li>
-            {/* origen y tueste solo aparecen si es café (si no son null) */}
             {pub.origen && <li><strong>Origen:</strong> {pub.origen}</li>}
             {pub.tueste && <li><strong>Tueste:</strong> {pub.tueste}</li>}
             <li><strong>Stock:</strong> {pub.stock} disponibles</li>
           </ul>
 
-          {/* DATOS DEL VENDEDOR */}
           {v && (
             <div className="p-3 rounded mt-3" style={{ backgroundColor: 'var(--crema)' }}>
               <h5 style={{ color: 'var(--cafe-oscuro)' }}>{v.nombre_comercio}</h5>
@@ -152,7 +158,6 @@ function Detalle() {
             </div>
           )}
 
-          {/* SOLICITA AL VENDEDOR */}
           {v && (
             <div className="mt-4">
               <p className="fw-bold mb-2" style={{ color: 'var(--cafe-oscuro)' }}>
@@ -182,7 +187,6 @@ function Detalle() {
         </Col>
       </Row>
 
-      {/* DEJAR OPINIÓN — ancho completo */}
       <div className="mt-4 p-3 rounded" style={{ backgroundColor: 'var(--crema)' }}>
         <p className="fw-bold mb-2" style={{ color: 'var(--cafe-oscuro)' }}>
           Deja tu opinión sobre este vendedor
@@ -224,7 +228,6 @@ function Detalle() {
         )}
       </div>
 
-      {/* LISTA DE OPINIONES*/}
       <div className="mt-4">
         <div className="d-flex justify-content-between align-items-center mb-2">
           <p className="fw-bold mb-0" style={{ color: 'var(--cafe-oscuro)' }}>

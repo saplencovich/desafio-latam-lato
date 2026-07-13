@@ -13,6 +13,8 @@ function Login() {
     password: "",
    });
 
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+
   const handleChange = (e) => {
     setFormulario({
       ...formulario,
@@ -62,12 +64,27 @@ function Login() {
           onChange={handleChange}
         />
         <label>Contraseña</label>
-        <input
-          type="password"
-          name="password"
-          value={formulario.password}
-          onChange={handleChange}
-        />
+        <div style={{ position: "relative" }}>
+          <input
+            type={mostrarPassword ? "text" : "password"}
+            name="password"
+            value={formulario.password}
+            onChange={handleChange}
+            style={{ width: "100%", paddingRight: "35px" }}
+          />
+          <i
+            className={mostrarPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}
+            onClick={() => setMostrarPassword(!mostrarPassword)}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#555",
+            }}
+          ></i>
+        </div>
         <button type="submit">
           Ingresar
         </button>

@@ -63,9 +63,19 @@ const register = async (datos) => {
     localStorage.removeItem('token')
   }
 
+  // Actualiza el usuario en memoria y localStorage sin necesidad de re-loguear.
+  // Se usa después de editar perfil o datos de comercio.
+  const updateUser = (datosActualizados) => {
+    setUser((prev) => {
+      const nuevoUser = { ...prev, ...datosActualizados }
+      localStorage.setItem('user', JSON.stringify(nuevoUser))
+      return nuevoUser
+    })
+  }
+
   // Todo lo que va en value queda disponible globalmente para los componentes.
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

@@ -27,6 +27,12 @@ async function buscarPorId(id) {
   return rows[0] || null;
 }
 
+async function buscarPorIdConPassword(id) {
+  const query = `SELECT * FROM usuarios WHERE id = $1`;
+  const { rows } = await pool.query(query, [id]);
+  return rows[0] || null;
+}
+
 async function actualizarUsuario(id, { nombre, foto_url }) {
   const query = `
     UPDATE usuarios
@@ -36,6 +42,23 @@ async function actualizarUsuario(id, { nombre, foto_url }) {
     RETURNING id, nombre, email, rol, foto_url, created_at
   `;
   const { rows } = await pool.query(query, [id, nombre, foto_url]);
+  return rows[0] || null;
+}
+
+async function actualizarEmail(id, email) {
+  const query = `
+    UPDATE usuarios
+    SET email = $2
+    WHERE id = $1
+    RETURNING id, nombre, email, rol, foto_url, created_at
+  `;
+  const { rows } = await pool.query(query, [id, email]);
+  return rows[0] || null;
+}
+
+async function actualizarPassword(id, passwordHash) {
+  const query = `UPDATE usuarios SET password = $2 WHERE id = $1 RETURNING id`;
+  const { rows } = await pool.query(query, [id, passwordHash]);
   return rows[0] || null;
 }
 
@@ -49,6 +72,9 @@ module.exports = {
   crearUsuario,
   buscarPorEmail,
   buscarPorId,
+  buscarPorIdConPassword,
   actualizarUsuario,
+  actualizarEmail,
+  actualizarPassword,
   eliminarUsuario,
 };
