@@ -17,7 +17,10 @@ const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+  ],
 }));
 
 app.use(express.json());
