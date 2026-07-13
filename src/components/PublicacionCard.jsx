@@ -28,8 +28,9 @@ function PublicacionCard({ publicacion, esDueno = false, onEditar, onEliminar })
 
         {/* Renderizado condicional: dueño vs. visitante */}
         {esDueno ? (
-          <div className="mt-auto d-flex gap-2">
+          <div className="mt-auto d-flex gap-2 justify-content-between w-100">
             <Button
+            style={{ backgroundColor: '#4B2E2B', border: 'none', padding: '5px'}}
               size="sm"
               variant="outline-secondary"
               onClick={() => onEditar?.(id)}
@@ -38,6 +39,7 @@ function PublicacionCard({ publicacion, esDueno = false, onEditar, onEliminar })
             </Button>
             <Button
               size="sm"
+              style={{ backgroundColor: '#4B2E2B', border: 'none', padding: '5px'}}
               variant="outline-danger"
               onClick={() => onEliminar?.(id)}
             >

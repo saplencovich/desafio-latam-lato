@@ -125,12 +125,26 @@
 }
 
 .btn-editar-publicacion{
+    margin-right: 5px;
+    border-radius: 5px;
     border: none;
+    background: #f6c995;
     color: #4B2E2B;
 }
 .btn-eliminar-publicacion{
     border: none;
+    background: #f6c995;
+    border-radius: 5px;
+    margin-left: 5px;
     color: #4B2E2B;
+}
+.btn-editar-publicacion:hover{
+    background:#caa57c;
+    color:#4B2E2B;
+}
+.btn-eliminar-publicacion:hover{
+    background:#caa57c;
+    color:#4B2E2B;
 }
 
 .perfil-editar-seccion{
